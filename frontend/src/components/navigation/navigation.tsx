@@ -1,93 +1,58 @@
 'use client';
 
-import Link from 'next/link';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser } from '../user';
-import { useState } from 'react';
-import 'navigation.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faHouse, faRightLeft, faWallet, faTag, faChartSimple, faGear} from '@fortawesome/free-solid-svg-icons';
+import './navigation.css';
 
-export const Navigation: React.FC = () => {
+type NavItem = {
+  readonly label: string;
+  readonly href: string;
+  readonly icon?: React.ComponentType;
+  readonly external?: boolean;
+};
+
+const NAV_ITEMS: NavItem[] = [
+  { label: 'Главная', href: '/', icon: <FontAwesomeIcon icon={faHouse} /> },
+  { label: 'Транзакции', href: '/transactions', icon: <FontAwesomeIcon icon={faRightLeft} /> },
+  { label: 'Счета', href: '/accounts', icon: <FontAwesomeIcon icon={faWallet} /> },
+  { label: 'Категории', href: '/categories', icon: <FontAwesomeIcon icon={faTag} /> },
+  { label: 'Аналитика', href: '/reports', icon: <FontAwesomeIcon icon={faChartSimple} /> },
+  { label: 'Настройки', href: '/settings', icon: <FontAwesomeIcon icon={faGear} /> }
+];
+
+export function Navigation() {
     const router = useRouter();
-    const { user } = useUser();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const navItems = [
-        { label: 'Dashboard', href: '/dashboard' },
-        { label: 'Accounts', href: '/accounts' },
-        { label: 'Categories', href: '/categories' },
-        { label: 'Profile', href: '/profile' },
-    ];
-
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-
-    const closeMenu = () => {
-        setIsMenuOpen(false);
-    };
+    const onItemClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        event.preventDefault();
+        router.push(href);
+    }
 
     return (
         <>
-            <header className="nav-wrapper bg-accent">\
-                <svg className="logo" width="30" height="30">
-                    <image href="/public/logo.svg" width="30" height="30" />
-                </svg>
-
-                <nav className="items-wrapper">
-                    {/* Desktop Menu */}
-                    <ul className="items-wrapper">
-                        {navItems.map((item) => (
-                            <li key={item.href} className="item">
-                                <Link
-                                    href={item.href}
-                                    className="item-link"
-                                >
-                                    {item.label}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-
-                    {/* Mobile Hamburger Icon */}
-                    <button
-                        className="menu-icon"
-                        onClick={toggleMenu}
-                        aria-label="Toggle menu"
-                    >
-                        <svg>
-                            <image href="/public/menu.svg" width="30" height="30" />
-                        </svg>
-                    </button>
-                </nav>
-            </header>
-
-            {/* Mobile Sidebar */}
-            {isMenuOpen && (
-                <div className="sidebar-wrapper">
-                    {/* Overlay */}
-                    <div
-                        className="overlay"
-                        onClick={closeMenu}
-                    ></div>
-
-                    {/* Sidebar */}
-                    <div className="sidebar">
-                        <ul className="items-wrapper">
-                            {navItems.map((item) => (
-                                <li key={item.href} className="item">
-                                    <Link
-                                        href={item.href}
-                                        className="item-link"
-                                        onClick={closeMenu}
-                                    >
-                                        {item.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+            <nav className="nav-wrapper">
+                <div className="nav-header">
+                    <img src="/assets/icon.svg" alt="Finny logo" width="50" height="50" />
+                    <h1>Finny</h1>
                 </div>
-            )}
+
+                <ul className="nav-content">
+                    {NAV_ITEMS.map((item) => (
+                        <li key={item.href} className="item-wrapper">
+                            {item.icon && (
+                                <span className="item-icon">
+                                    {item.icon}
+                                </span>
+                            )}
+                            <a href={item.href} className="item" onClick={(event) => onItemClick(event, item.href)}>
+                                {item.label}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
         </>
-    );
-};
+    )
+}

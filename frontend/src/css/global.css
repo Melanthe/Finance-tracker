@@ -1,0 +1,32 @@
+html {
+    --background: #FFF;
+    --text: #8A939E;
+    --text-strong: #112847;
+    --accent: #6E9D90;
+
+    padding: 0;
+    margin: 0;
+}
+
+.content-wrapper {
+    font-family: "Inter", sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+h1 {
+    font-family: "Nunito", sans-serif;
+    color: var(--text-strong);
+}
+
+.main-content {
+    padding: 12px 24px;
+    flex: 1;
+}
+
+.bg-accent {
+    background-color: var(--accent);
+}

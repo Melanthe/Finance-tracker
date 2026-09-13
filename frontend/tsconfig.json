@@ -26,6 +26,12 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@/public/*": [
+        "./public/*"
+      ],
+      "@/assets/*": [
+        "./src/assets/*"
       ]
     }
   },
